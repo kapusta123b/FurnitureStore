@@ -139,3 +139,4 @@ Planned features:
 - ⚡ **Redis Caching** — Speed things up
 - 🐳 **Docker & AWS** — Containerized, ready for production with Nginx
 - 🔑 **Social Login** — Sign in with Google, GitHub, Facebook
+# Furniture-Store-aws
