@@ -23,6 +23,13 @@ A professional **E-commerce platform** specialized in furniture, built with **Dj
 
 ---
 
+## 🗺️ Roadmap & Future Features
+
+- [ ] ☎️ **Phone Verification** — SMS confirmation during registration.
+- [ ] ⚡ **Redis Caching** — Implementing cache for high-traffic product pages.
+- [ ] 🔑 **Social Auth** — Login via Google, GitHub, and Telegram.
+---
+
 ## 🚀 Quick Start (Production)
 
 Follow these steps to deploy the application on your server.
