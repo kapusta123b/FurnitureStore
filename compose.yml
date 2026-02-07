@@ -1,0 +1,54 @@
+services:
+  web:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: web_prod:1.0.0
+    command: gunicorn app.wsgi:application --bind 0.0.0.0:8000 --access-logfile '-' --error-logfile '-'
+    expose:
+      - 8000
+    environment:
+      - SECRET_KEY
+      - ALLOWED_HOSTS
+      - CSRF_TRUSTED_ORIGINS
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PORT
+      - DEBUG=False
+    volumes:
+      - static_volume:/app/staticfiles
+      - ./backend/media:/app/media
+    restart: unless-stopped #no, always, on-failure: 5, unless-stopped
+    secrets:
+      - pg_password
+    depends_on:
+      - db
+  db:
+    image: postgres:16-bookworm
+    volumes:
+      - data:/var/lib/postgresql/data/
+    restart: unless-stopped #no, always, on-failure: 5, unless-stopped
+    secrets:
+      - pg_password
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_DB
+      - POSTGRES_PASSWORD_FILE=/run/secrets/pg_password
+
+  nginx:
+    image: nginx:alpine-slim
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - static_volume:/app/staticfiles
+      - ./backend/media:/app/media
+    ports:
+      - 80:80
+    depends_on:
+      - web
+secrets:
+  pg_password:
+    file: ./sets/pg_secret_password.txt
+
+volumes:
+  data:
+  static_volume:

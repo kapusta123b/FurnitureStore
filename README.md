@@ -1,142 +1,144 @@
-# 🛋️ F Store
+# 🛋️ Furniture Store - Django E-Commerce
 
-A furniture e-commerce shop built with Django. Started as a learning project, but seriously aiming to become something good.
+<p align="center">
+  <a href="https://git.io/typing-svg">
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=24&pause=1000&color=F7F7F7&center=true&vCenter=true&width=500&lines=Modern+E-commerce+Platform;Built+with+Django+5;Dockerized+Deployment" alt="Typing SVG" />
+  </a>
+</p>
 
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|-------|---|
-| **Backend** | Django 5.x, Python 3.11+ |
-| **Database** | PostgreSQL 12+ |
-| **Frontend** | HTML5, CSS3 (SCSS), Vanilla JS |
-| **Build** | SASS, Django SASS Processor |
-
----
-
-## ✨ What's Inside
-
-- 🔍 Product catalog with search & filters
-- 🔐 User accounts (register, login, logout)
-- 🛒 Shopping cart & checkout
-- 📦 Order management
-- 👤 User dashboard with order history
-- 🌍 English & Russian support
-- 📱 Mobile-friendly design
-- ✉️ Sending email (partially done)
-- 🤖 CAPTCHA — Protection against bots
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python Version">
+  <img src="https://img.shields.io/badge/Django-5.x-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django Version">
+  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker">
+  <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" alt="Status">
+</p>
 
 ---
 
-## 🚀 Getting Started
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100&section=header&text=Professional%20Furniture%20E-Store&fontSize=30" width="100%"/>
+</p>
 
-### 📋 You Need
+A professional **E-commerce platform** specialized in furniture, built with **Django 5**. This project is fully containerized with **Docker**, using **Nginx** as a reverse proxy and **PostgreSQL** for data persistence.
 
-- Python 3.11+
-- PostgreSQL 12+ (installed & running)
-- A virtual environment
+---
 
-### 📥 Installation
+## 🚀 Quick Start (Production)
 
-**1. Clone the repo**
+Follow these steps to deploy the application on your server.
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/Phonkmasti/FurnitureStore.git
 cd FurnitureStore
 ```
 
-**2. Set up virtual environment**
+### 2. Configure Production Secrets
+The project uses a secure mechanism for handling sensitive data through the `sets/` directory.
+
+1.  **Database Password**: Create or edit `./sets/pg_secret_password.txt` and put your database password inside (no spaces):
+    ```bash
+    echo "your_secure_password" > ./sets/pg_secret_password.txt
+    ```
+
+2.  **Environment Variables**: Edit `./sets/set_env.sh` to match your server details:
+    ```bash
+    nano ./sets/set_env.sh
+    ```
+    Update the following:
+    - `ALLOWED_HOSTS`: Your domain or server IP.
+    - `CSRF_TRUSTED_ORIGINS`: `http://your_ip` or `https://your_domain`.
+
+3.  **Apply Variables**: Source the script to export variables to your current shell:
+    ```bash
+    source ./sets/set_env.sh
+    ```
+
+### 3. Nginx Configuration
+Edit `./conf.d/nginx.conf` and replace the placeholders with your server's IP or DNS name:
+```nginx
+server {
+    listen 80;
+    server_name your_public_ipv4_adress your_public_DNS_adress; # <--- CHANGE THIS
+    ...
+}
+```
+
+### 4. Launch with Docker
+Run the following command to build and start all services in detached mode:
 ```bash
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-```
-
-**3. Install dependencies**
-```bash
-pip install -r requirements.txt
-```
-
-**4. Configure your database**
-If you want something other than PostgreSQL, edit `app/settings.py`
-
-**5. Run migrations**
-```bash
-python manage.py migrate
-```
-
-**6. Create admin user**
-```bash
-python manage.py createsuperuser
-```
-
-**7. Start the dev server**
-```bash
-python manage.py runserver
-```
-
-Open: **http://127.0.0.1:8000/**
-
----
-
-## 📂 Project Layout
-
-```
-FurnitureStore/
-├── app/                    # Django config
-├── main/                   # Homepage & static pages
-├── goods/                  # Product catalog
-├── carts/                  # Shopping cart
-├── orders/                 # Order handling
-├── users/                  # Auth & profiles
-├── templates/              # HTML templates
-├── static/
-│   └── deps/
-│       ├── css/           # SCSS styles
-│       ├── js/            # JavaScript files
-│       ├── svg/           # SVG icons
-│       └── favicon/       # Favicon stuff
-├── media/                 # Uploads
-├── fixtures/              # Initial data
-├── manage.py
-├── requirements.txt
-└── README.md
+docker compose up -d --build
 ```
 
 ---
 
-## 🗄️ Database Models
+## 🛠️ Post-Deployment
 
-| Model | What It Does |
-|-------|---|
-| **User** | Extended user profile with avatar & subscription |
-| **Product** | Items with prices, discounts, stock |
-| **Cart** | Items in user's/session's cart |
-| **Order** | Orders with shipping info |
-| **OrderItem** | Individual items in an order |
+### Create Admin User
+To access the Django admin panel (`/admin/`), create a superuser inside the running container:
+```bash
+docker compose exec web python manage.py createsuperuser
+```
 
----
-
-## 💡 Development Tips
-
-- SASS compiles automatically
-- Admin panel at `/admin/`
-- This project is constantly evolving
+### Load Demo Data
+The system automatically loads category and product fixtures during the first start via `entrypoint.sh`. If you need to reload them:
+```bash
+docker compose exec web python manage.py loaddata fixtures/goods/goods_Category.json
+docker compose exec web python manage.py loaddata fixtures/goods/goods_Products.json
+```
 
 ---
 
-## 📝 Quick Notes
+## 🏗️ Project Architecture
 
-- Make sure PostgreSQL is actually running before you start
-- Collect static files: `python manage.py collectstatic`
+```mermaid
+graph TD
+    subgraph Client[External Access]
+        N[Nginx Reverse Proxy]
+    end
+
+    subgraph App[Django Application]
+        G[Gunicorn WSGI]
+        D[Django Core]
+        S[Sass Processor]
+    end
+
+    subgraph Services[Backend Services]
+        DB[(PostgreSQL 16)]
+        M(Media Storage)
+        ST(Static Files)
+    end
+
+    N --> G
+    G --> D
+    D --> S
+    D --> DB
+    D --> M
+    D --> ST
+```
 
 ---
 
-## 🗺️ What's Coming Next
+## 📂 Deployment Components
 
-Planned features:
+- **`backend/`**: Django source code and Dockerfile.
+- **`conf.d/`**: Nginx configuration files.
+- **`sets/`**: Scripts and files for managing production environment variables and secrets.
+- **`compose.yml`**: Main orchestration file.
 
-- ☎️ **Phone Verification** — SMS confirmation on signup
-- ⚡ **Redis Caching** — Speed things up
-- 🐳 **Docker & AWS** — Containerized, ready for production with Nginx
-- 🔑 **Social Login** — Sign in with Google, GitHub, Facebook
-# Furniture-Store-aws
+---
+
+
+## 🤝 Support & Connect
+
+<p align="center">
+  <a href="https://t.me/your_telegram">
+    <img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram" />
+  </a>
+</p>
+
+---
+
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=60&section=footer" width="100%"/>
+</p>
