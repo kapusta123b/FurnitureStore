@@ -136,7 +136,7 @@ graph TD
 ---
 
 
-## 🤝 Support & Connect
+## 🤝 Connect
 
 <p align="center">
   <a href="https://t.me/your_telegram">
