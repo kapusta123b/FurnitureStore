@@ -1,10 +1,4 @@
-# 🛋️ Furniture Store - Django E-Commerce
-
-<p align="center">
-  <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=600&size=24&pause=1000&color=F7F7F7&center=true&vCenter=true&width=500&lines=Modern+E-commerce+Platform;Built+with+Django+5;Dockerized+Deployment" alt="Typing SVG" />
-  </a>
-</p>
+# 🛋️ Furniture Store
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python Version">
@@ -13,21 +7,11 @@
   <img src="https://img.shields.io/badge/Status-Active-success?style=for-the-badge" alt="Status">
 </p>
 
----
 
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=100&section=header&text=Professional%20Furniture%20E-Store&fontSize=30" width="100%"/>
-</p>
 
-A professional **E-commerce platform** specialized in furniture, built with **Django 5**. This project is fully containerized with **Docker**, using **Nginx** as a reverse proxy and **PostgreSQL** for data persistence.
 
----
+A **E-commerce platform** specialized in furniture, built with **Django 5**. This project is fully containerized with **Docker**, using **Nginx** as a reverse proxy and **PostgreSQL** for data persistence.
 
-## 🗺️ Roadmap & Future Features
-
-- [ ] ☎️ **Phone Verification** — SMS confirmation during registration.
-- [ ] ⚡ **Redis Caching** — Implementing cache for high-traffic product pages.
-- [ ] 🔑 **Social Auth** — Login via Google, GitHub, and Telegram.
 ---
 
 ## 🚀 Quick Start (Production)
@@ -139,7 +123,7 @@ graph TD
 ## 🤝 Connect
 
 <p align="center">
-  <a href="https://t.me/your_telegram">
+  <a href="https://t.me/kapusta123b">
     <img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white" alt="Telegram" />
   </a>
   <a href="mailto:fartuchoknik22@gmail.com">
