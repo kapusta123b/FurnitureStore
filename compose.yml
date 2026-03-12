@@ -3,7 +3,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: web_prod:1.0.0
+    image: furniture_store_web:latest
     command: gunicorn app.wsgi:application --bind 0.0.0.0:8000 --access-logfile '-' --error-logfile '-'
     expose:
       - 8000
@@ -17,38 +17,48 @@ services:
       - DEBUG=False
     volumes:
       - static_volume:/app/staticfiles
-      - ./backend/media:/app/media
-    restart: unless-stopped #no, always, on-failure: 5, unless-stopped
+      - media_volume:/app/media
+    restart: unless-stopped
     secrets:
       - pg_password
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
   db:
     image: postgres:16-bookworm
     volumes:
-      - data:/var/lib/postgresql/data/
-    restart: unless-stopped #no, always, on-failure: 5, unless-stopped
+      - db_data:/var/lib/postgresql/data/
+    restart: unless-stopped
     secrets:
       - pg_password
     environment:
       - POSTGRES_USER
       - POSTGRES_DB
       - POSTGRES_PASSWORD_FILE=/run/secrets/pg_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   nginx:
     image: nginx:alpine-slim
     volumes:
-      - ./conf.d:/etc/nginx/conf.d
-      - static_volume:/app/staticfiles
-      - ./backend/media:/app/media
+      - ./conf.d:/etc/nginx/conf.d:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
     ports:
       - 80:80
     depends_on:
       - web
+    restart: unless-stopped
+
 secrets:
   pg_password:
     file: ./sets/pg_secret_password.txt
 
 volumes:
-  data:
+  db_data:
   static_volume:
+  media_volume:
