@@ -39,81 +39,70 @@ graph TD
 
 ---
 
-## 🚀 Deployment Guide
+## 🚀 Deployment Guide (Linux)
 
-Follow these steps to deploy the application on any server (Ubuntu/Debian recommended).
+Follow these steps for a clean installation. If you've previously run `docker compose` and it failed, follow the [Troubleshooting](#-troubleshooting) section first.
 
-### 1. Server Preparation
-If Docker is not installed: https://docs.docker.com/desktop/setup/install/linux/
-
-### 2. Project Installation
+### 1. Project Preparation
 ```bash
 git clone https://github.com/Phonkmasti/FurnitureStore.git
 cd FurnitureStore
 ```
 
-### 3. Configuration & Secrets
+### 2. Configuration & Secrets
 
-#### 3.1 Database Password
-The project uses Docker Secrets for security. Create your password file:
+#### 2.1 Database Password
+The project uses Docker Secrets. Create your password file:
 ```bash
-# Create the password file (no spaces, just the password)
-echo "your_secure_db_password" > ./sets/pg_secret_password.txt
+# Set your secure password (no spaces)
+echo "your_secure_password" > ./sets/pg_secret_password.txt
 ```
 
-#### 3.2 Environment Variables
-Edit the environment script to match your production details:
+#### 2.2 Environment Variables
+You MUST update the environment script with your server details:
 ```bash
 nano ./sets/set_env.sh
 ```
-**Update these values:**
-- `SECRET_KEY`: Set a unique, long random string.
-- `ALLOWED_HOSTS`: Your server IP or domain (e.g., `12.34.56.78 example.com`).
-- `CSRF_TRUSTED_ORIGINS`: Your site URL (e.g., `http://12.34.56.78`).
+**Required Changes:**
+- `SECRET_KEY`: Set a unique random string.
+- `ALLOWED_HOSTS`: Your server IP or domain (e.g., `13.51.10.20`).
+- `CSRF_TRUSTED_ORIGINS`: Your site URL (e.g., `http://13.51.10.20`).
 
-**Apply the configuration:**
+**Apply variables to your shell:**
 ```bash
 source ./sets/set_env.sh
 ```
 
-#### 3.3 Nginx Setup
-Configure Nginx to recognize your server address:
-```bash
-nano ./conf.d/nginx.conf
-```
-Update line 7:
+#### 2.3 Nginx Configuration
+Edit `conf.d/nginx.conf` and update `server_name` (line 7):
 ```nginx
-server_name 12.34.56.78 example.com; # <--- Replace with your IP or Domain
+server_name 13.51.10.20; # <--- Replace with your AWS Public IP
 ```
 
-### 4. Launching the System
-Build and start all services:
+### 3. Launching the System
+
+Build and start the containers. **Note: you must have sourced the script in step 2.2 in this same terminal session.**
 ```bash
 docker compose up -d --build
+```
+*If you need `sudo` to run docker, use:*
+```bash
+sudo -E docker compose up -d --build
 ```
 
 ---
 
 ## 🛠️ Post-Deployment & Maintenance
 
-### Initialize Database and Demo Data
-The system runs migrations automatically. If data is missing, run these commands:
+### Initialize Demo Data
+The system runs migrations automatically. If data is missing, run:
 ```bash
-# 1. Apply Migrations
-docker compose exec web python manage.py migrate
-
-# 2. Load Categories
 docker compose exec web python manage.py loaddata fixtures/goods/goods_Category.json
-
-# 3. Load Products
 docker compose exec web python manage.py loaddata fixtures/goods/goods_Products.json
-
-# 4. Load Images
 docker compose exec web python manage.py loaddata fixtures/goods/goods_ProductImage.json
 ```
 
 ### Create Administrative Account
-Access the Django admin panel at `/admin/`:
 ```bash
 docker compose exec web python manage.py createsuperuser
 ```
