@@ -14,10 +14,10 @@ echo "PostgreSQL started"
 
 python manage.py compilescss
 python manage.py collectstatic --noinput
+python manage.py makemigrations
+python manage.py migrate
 python manage.py loaddata fixtures/goods/goods_Category.json
 python manage.py loaddata fixtures/goods/goods_Products.json
 python manage.py loaddata fixtures/goods/goods_ProductImage.json
-python manage.py makemigrations
-python manage.py migrate
 
 exec "$@"
