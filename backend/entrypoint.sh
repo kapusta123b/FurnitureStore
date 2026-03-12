@@ -12,11 +12,7 @@ while ! nc -z "db" ${POSTGRES_PORT:-5432}; do
 done
 echo "PostgreSQL started"
 
-python manage.py migrate
 python manage.py compilescss
 python manage.py collectstatic --noinput
-python manage.py loaddata fixtures/goods/goods_Category.json
-python manage.py loaddata fixtures/goods/goods_Products.json
-python manage.py loaddata fixtures/goods/goods_ProductImage.json
 
 exec "$@"
