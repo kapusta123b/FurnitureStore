@@ -5,10 +5,6 @@ venv/
 __pycache__/
 
 staticfiles/
-
-**/migrations/
 .idea
-
-**/migrations/
 
 

@@ -90,12 +90,22 @@ docker compose up -d --build
 sudo -E docker compose up -d --build
 ```
 
+### 4. Database Setup (CRITICAL)
+Since you are using a custom User model, you must generate and apply migrations for your apps:
+```bash
+# 1. Generate migration files
+docker compose exec web python manage.py makemigrations
+
+# 2. Apply migrations to the database
+docker compose exec web python manage.py migrate
+```
+
 ---
 
 ## 🛠️ Post-Deployment & Maintenance
 
 ### Initialize Demo Data
-The system runs migrations automatically. If data is missing, run:
+After migrations are applied, load the initial data:
 ```bash
 docker compose exec web python manage.py loaddata fixtures/goods/goods_Category.json
 docker compose exec web python manage.py loaddata fixtures/goods/goods_Products.json
